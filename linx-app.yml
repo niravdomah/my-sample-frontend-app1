@@ -1,0 +1,10 @@
+env:
+  - name: MY_ENV
+    default: "my-value"
+
+  - name: PORT
+    default: "3000"
+
+port:
+  default: 3000
+  linked_env_var: PORT

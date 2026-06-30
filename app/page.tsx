@@ -1,6 +1,13 @@
 import Image from "next/image";
+import { connection } from "next/server";
 
-export default function Home() {
+export default async function Home() {
+  // Opt out of static prerendering so process.env is read per-request at
+  // runtime (e.g. from the pod/container env) rather than frozen at build time.
+  // See node_modules/next/dist/docs/.../guides/environment-variables.md
+  await connection();
+  const myEnv = process.env.MY_ENV;
+
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
@@ -13,6 +20,12 @@ export default function Home() {
           priority
         />
         <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
+          <div className="inline-flex items-center gap-2 rounded-full border border-black/[.08] bg-black/[.03] px-4 py-1.5 text-sm font-medium text-zinc-700 dark:border-white/[.145] dark:bg-white/[.06] dark:text-zinc-300">
+            <span className="text-zinc-500 dark:text-zinc-500">MY_ENV</span>
+            <span className="font-mono text-zinc-950 dark:text-zinc-50">
+              {myEnv ?? "(not set)"}
+            </span>
+          </div>
           <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
             To get started, edit the page.tsx file.
           </h1>
